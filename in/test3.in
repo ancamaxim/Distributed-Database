@@ -1,0 +1,14 @@
+13
+ADD_SERVER 1 5
+EDIT "image_kind_leg.txt" "Box understand feel."
+EDIT "wish_service.txt" "Mouth attorney."
+EDIT "seem_fund_result.txt" "Still spring former."
+EDIT "everyone_quite.txt" "Across bank lose."
+EDIT "enjoy_film.txt" "Its she many."
+EDIT "three_how_small.txt" "Any against might."
+GET "image_kind_leg.txt"
+GET "wish_service.txt"
+GET "seem_fund_result.txt"
+GET "everyone_quite.txt"
+GET "enjoy_film.txt"
+GET "three_how_small.txt"

@@ -1,0 +1,30 @@
+[Server 0]-Response: Request- EDIT c674390f9 - has been added to queue
+[Server 0]-Log: Task queue size is 1
+
+[Server 1]-Response: Request- EDIT a3529213e15 - has been added to queue
+[Server 1]-Log: Task queue size is 1
+
+[Server 2]-Response: Request- EDIT 5a51719f5ec - has been added to queue
+[Server 2]-Log: Task queue size is 1
+
+[Server 0]-Response: Request- EDIT 2fe5f9f583 - has been added to queue
+[Server 0]-Log: Task queue size is 2
+
+[Server 0]-Response: Document c674390f9 has been created
+[Server 0]-Log: Cache MISS for c674390f9
+
+[Server 0]-Response: Document 2fe5f9f583 has been created
+[Server 0]-Log: Cache MISS for 2fe5f9f583
+
+[Server 0]-Response: Keyboard
+[Server 0]-Log: Cache HIT for c674390f9
+
+[Server 0]-Response: Laptop
+[Server 0]-Log: Cache HIT for 2fe5f9f583
+
+[Server 2]-Response: Document 5a51719f5ec has been created
+[Server 2]-Log: Cache MISS for 5a51719f5ec
+
+[Server 0]-Response: Laptop
+[Server 0]-Log: Cache HIT for 2fe5f9f583
+

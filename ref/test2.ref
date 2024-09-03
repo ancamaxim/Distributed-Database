@@ -1,0 +1,33 @@
+[Server 1]-Response: Request- EDIT image_kind_leg.txt - has been added to queue
+[Server 1]-Log: Task queue size is 1
+
+[Server 1]-Response: Request- EDIT wish_service.txt - has been added to queue
+[Server 1]-Log: Task queue size is 2
+
+[Server 1]-Response: Request- EDIT seem_fund_result.txt - has been added to queue
+[Server 1]-Log: Task queue size is 3
+
+[Server 1]-Response: Document image_kind_leg.txt has been created
+[Server 1]-Log: Cache MISS for image_kind_leg.txt
+
+[Server 1]-Response: Document wish_service.txt has been created
+[Server 1]-Log: Cache MISS for wish_service.txt
+
+[Server 1]-Response: Document seem_fund_result.txt has been created
+[Server 1]-Log: Cache MISS for seem_fund_result.txt
+
+[Server 1]-Response: Box understand feel.
+[Server 1]-Log: Cache HIT for image_kind_leg.txt
+
+[Server 1]-Response: Mouth attorney.
+[Server 1]-Log: Cache HIT for wish_service.txt
+
+[Server 1]-Response: Still spring former.
+[Server 1]-Log: Cache HIT for seem_fund_result.txt
+
+[Server 1]-Response: Request- EDIT image_kind_leg.txt - has been added to queue
+[Server 1]-Log: Task queue size is 1
+
+[Server 1]-Response: Request- EDIT wish_service.txt - has been added to queue
+[Server 1]-Log: Task queue size is 2
+

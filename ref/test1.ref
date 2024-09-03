@@ -1,0 +1,24 @@
+[Server 1]-Response: Request- EDIT manager.txt - has been added to queue
+[Server 1]-Log: Task queue size is 1
+
+[Server 1]-Response: Document manager.txt has been created
+[Server 1]-Log: Cache MISS for manager.txt
+
+[Server 1]-Response: Box understand feel.
+[Server 1]-Log: Cache HIT for manager.txt
+
+[Server 1]-Response: Request- EDIT another_manager.txt - has been added to queue
+[Server 1]-Log: Task queue size is 1
+
+[Server 1]-Response: Document another_manager.txt has been created
+[Server 1]-Log: Cache MISS for another_manager.txt - cache entry for manager.txt has been evicted
+
+[Server 1]-Response: Mouth attorney.
+[Server 1]-Log: Cache HIT for another_manager.txt
+
+[Server 1]-Response: Box understand feel.
+[Server 1]-Log: Cache MISS for manager.txt - cache entry for another_manager.txt has been evicted
+
+[Server 1]-Response: Mouth attorney.
+[Server 1]-Log: Cache MISS for another_manager.txt - cache entry for manager.txt has been evicted
+

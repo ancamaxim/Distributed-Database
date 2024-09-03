@@ -1,0 +1,93 @@
+[Server 1]-Response: Request- EDIT image_kind_leg.txt - has been added to queue
+[Server 1]-Log: Task queue size is 1
+
+[Server 1]-Response: Request- EDIT wish_service.txt - has been added to queue
+[Server 1]-Log: Task queue size is 2
+
+[Server 1]-Response: Request- EDIT seem_fund_result.txt - has been added to queue
+[Server 1]-Log: Task queue size is 3
+
+[Server 1]-Response: Request- EDIT everyone_quite.txt - has been added to queue
+[Server 1]-Log: Task queue size is 4
+
+[Server 1]-Response: Request- EDIT enjoy_film.txt - has been added to queue
+[Server 1]-Log: Task queue size is 5
+
+[Server 1]-Response: Request- EDIT three_how_small.txt - has been added to queue
+[Server 1]-Log: Task queue size is 6
+
+[Server 1]-Response: Document image_kind_leg.txt has been created
+[Server 1]-Log: Cache MISS for image_kind_leg.txt
+
+[Server 1]-Response: Document wish_service.txt has been created
+[Server 1]-Log: Cache MISS for wish_service.txt
+
+[Server 1]-Response: Document seem_fund_result.txt has been created
+[Server 1]-Log: Cache MISS for seem_fund_result.txt
+
+[Server 1]-Response: Document everyone_quite.txt has been created
+[Server 1]-Log: Cache MISS for everyone_quite.txt
+
+[Server 1]-Response: Document enjoy_film.txt has been created
+[Server 1]-Log: Cache MISS for enjoy_film.txt
+
+[Server 1]-Response: Document three_how_small.txt has been created
+[Server 1]-Log: Cache MISS for three_how_small.txt - cache entry for image_kind_leg.txt has been evicted
+
+[Server 1]-Response: Its she many.
+[Server 1]-Log: Cache HIT for enjoy_film.txt
+
+[Server 1]-Response: Box understand feel.
+[Server 1]-Log: Cache MISS for image_kind_leg.txt - cache entry for wish_service.txt has been evicted
+
+[Server 1]-Response: Across bank lose.
+[Server 1]-Log: Cache HIT for everyone_quite.txt
+
+[Server 1]-Response: Box understand feel.
+[Server 1]-Log: Cache HIT for image_kind_leg.txt
+
+[Server 1]-Response: Request- EDIT age_which.txt - has been added to queue
+[Server 1]-Log: Task queue size is 1
+
+[Server 1]-Response: Request- EDIT lay_ok_have_land.txt - has been added to queue
+[Server 1]-Log: Task queue size is 2
+
+[Server 1]-Response: Request- EDIT crime_test.txt - has been added to queue
+[Server 1]-Log: Task queue size is 3
+
+[Server 1]-Response: Request- EDIT protect_course.txt - has been added to queue
+[Server 1]-Log: Task queue size is 4
+
+[Server 1]-Response: Request- EDIT could_so_congress.txt - has been added to queue
+[Server 1]-Log: Task queue size is 5
+
+[Server 1]-Response: Document age_which.txt has been created
+[Server 1]-Log: Cache MISS for age_which.txt - cache entry for seem_fund_result.txt has been evicted
+
+[Server 1]-Response: Document lay_ok_have_land.txt has been created
+[Server 1]-Log: Cache MISS for lay_ok_have_land.txt - cache entry for three_how_small.txt has been evicted
+
+[Server 1]-Response: Document crime_test.txt has been created
+[Server 1]-Log: Cache MISS for crime_test.txt - cache entry for enjoy_film.txt has been evicted
+
+[Server 1]-Response: Document protect_course.txt has been created
+[Server 1]-Log: Cache MISS for protect_course.txt - cache entry for everyone_quite.txt has been evicted
+
+[Server 1]-Response: Document could_so_congress.txt has been created
+[Server 1]-Log: Cache MISS for could_so_congress.txt - cache entry for image_kind_leg.txt has been evicted
+
+[Server 1]-Response: Ready little gas.
+[Server 1]-Log: Cache HIT for could_so_congress.txt
+
+[Server 1]-Response: East such peace.
+[Server 1]-Log: Cache HIT for protect_course.txt
+
+[Server 1]-Response: Whose reason owner.
+[Server 1]-Log: Cache HIT for crime_test.txt
+
+[Server 1]-Response: Speech not.
+[Server 1]-Log: Cache HIT for lay_ok_have_land.txt
+
+[Server 1]-Response: Yes evidence.
+[Server 1]-Log: Cache HIT for age_which.txt
+
