@@ -10,15 +10,11 @@
 #define MAX_SERVERS             99999
 
 typedef struct load_balancer {
+    server_t **servers;
+    unsigned int size;
+    unsigned int *hashring;
     unsigned int (*hash_function_servers)(void *);
     unsigned int (*hash_function_docs)(void *);
-
-    /* TODO: remove test_server after testing
-     *       the functionality for a single server */
-    server_t *test_server;
-
-    /* TODO: add fields needed for a hashring with
-             multiple servers */
 } load_balancer;
 
 

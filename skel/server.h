@@ -18,7 +18,8 @@ typedef struct server_t {
     lru_cache *cache;
     queue_t *task;
     hashtable_t *database;
-    unsigned int server_id;
+    int server_id;
+    unsigned int hash;
 } server_t;
 
 typedef struct request {

@@ -28,7 +28,7 @@ void ll_add_nth_node(linked_list_t* list, unsigned int n, void* new_data)
 		list->head = new_node;
 		new_node->next = aux;
 		list->size++;
-		if (list->tail == NULL)
+		if (list->size == 1)
 			list->tail = new_node;
 	} else {
 		Node *p = list->head;
@@ -94,8 +94,8 @@ void ll_free(linked_list_t** pp_list)
 	Node *aux;
 	while ((*pp_list)->head) {
 		aux = ll_remove_nth_node((*pp_list), 0);
-		free(((info *)aux->data)->key);
-		free(((info *)aux->data)->value);
+		free(((info *)(aux->data))->key);
+		free(((info *)(aux->data))->value);
 		free(aux->data);
 		aux->data = NULL;
 		free(aux);
@@ -231,7 +231,7 @@ void ht_put(hashtable_t *ht, void *key, unsigned int key_size,
 	info *data = (info *)calloc(1, sizeof(info));
 	DIE(!data, "malloc() failed");
 	data->key = calloc(1, key_size);
-	memcpy(data->key, key, key_size);
+	strcpy(data->key, key);
 	ht->copy_func(&data->value, value, value_size);
 	ht->size++;
 	ll_add_nth_node(ht->buckets[index], 0, data); // adaug data in lista;

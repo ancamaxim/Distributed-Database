@@ -32,31 +32,24 @@ static response
         ht_put(s->database, doc_name, MAX_RESPONSE_LENGTH, doc_content, MAX_RESPONSE_LENGTH);
     }
     else {
-        // CACHE MISS
-        sprintf(resp->server_log, LOG_MISS, doc_name);
-        
         // verificare database
-        if (ht_has_key(s->database, doc_name)) {
+        if (ht_has_key(s->database, doc_name))
             sprintf(resp->server_response, MSG_B, doc_name);
-            // actualizare in database
-            ht_put(s->database, doc_name, MAX_RESPONSE_LENGTH, doc_content, MAX_RESPONSE_LENGTH);
-        }
-        else {
+        else
             sprintf(resp->server_response, MSG_C, doc_name);
-            // verificare cache full
-            if (evicted_key) {
-                sprintf(resp->server_log, LOG_EVICT, doc_name, ((info *)evicted_key)->key);
-                ht_put(s->database, ((info *)evicted_key)->key, MAX_RESPONSE_LENGTH,
-                ((info *)evicted_key)->value, MAX_RESPONSE_LENGTH);
-                free(((info *)evicted_key)->key);
-                free(((info *)evicted_key)->value);
-                free(evicted_key);
-            }
-            else
-                sprintf(resp->server_log, LOG_MISS, doc_name);
-            // adaugare in database
-            ht_put(s->database, doc_name, MAX_RESPONSE_LENGTH, doc_content, MAX_RESPONSE_LENGTH);
+        // verificare cache full
+        if (evicted_key) {
+            sprintf(resp->server_log, LOG_EVICT, doc_name, ((info *)evicted_key)->key);
+            ht_put(s->database, ((info *)evicted_key)->key, MAX_RESPONSE_LENGTH,
+            ((info *)evicted_key)->value, MAX_RESPONSE_LENGTH);
+            free(((info *)evicted_key)->key);
+            free(((info *)evicted_key)->value);
+            free(evicted_key);
         }
+        else
+            sprintf(resp->server_log, LOG_MISS, doc_name);
+        // adaugare in database
+        ht_put(s->database, doc_name, MAX_RESPONSE_LENGTH, doc_content, MAX_RESPONSE_LENGTH);
     }
     return resp;
 }
@@ -112,10 +105,17 @@ response *server_handle_request(server_t *s, request *req) {
     if (req->type == EDIT_DOCUMENT) {
         request *new_req = calloc(1, sizeof(request));
         new_req->type = EDIT_DOCUMENT;
-        simple_copy(&(new_req->doc_name), req->doc_name, strlen(req->doc_name));
-        simple_copy(&(new_req->doc_content), req->doc_content, strlen(req->doc_content));
+
+        new_req->doc_name = calloc(1, MAX_RESPONSE_LENGTH);
+        strcpy(new_req->doc_name, req->doc_name);
+        
+        new_req->doc_content = calloc(1, MAX_RESPONSE_LENGTH);
+        strcpy(new_req->doc_content, req->doc_content);
+
         q_enqueue(s->task, new_req);
     
+        free(new_req);
+
         response *resp = calloc(1, sizeof(response));
         resp->server_id = s->server_id;
         resp->server_response = calloc(1, MAX_RESPONSE_LENGTH);
@@ -126,7 +126,7 @@ response *server_handle_request(server_t *s, request *req) {
 
         return resp;
     }
-    else if (req->type == GET_DOCUMENT) {
+    else {
         request *elem;
         while(s->task->size > 0) {
             elem = q_front(s->task);
@@ -134,9 +134,10 @@ response *server_handle_request(server_t *s, request *req) {
             PRINT_RESPONSE(resp);
             q_dequeue(s->task);
         }
-        return server_get_document(s, req->doc_name);       
+        if (req->type == GET_DOCUMENT)
+            return server_get_document(s, req->doc_name);       
+        return NULL;
     }
-    return NULL;
 }
 
 void free_server(server_t **s) {

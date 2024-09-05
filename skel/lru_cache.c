@@ -63,12 +63,21 @@ bool lru_cache_put(lru_cache *cache, void *key, void *value,
             char *out_key = (char *)(((info *)(head->data))->key);
             char *out_value = (char *)(((info *)(head->data))->value);
             *evicted_key = calloc(1, sizeof(info));
-            simple_copy(&((*((info **)evicted_key))->key), out_key, MAX_RESPONSE_LENGTH);
-            simple_copy(&((*((info **)evicted_key))->value), out_value, MAX_RESPONSE_LENGTH);
+
+            (*((info **)evicted_key))->key = calloc(1, MAX_RESPONSE_LENGTH);
+            strcpy((*((info **)evicted_key))->key, out_key);
+
+            (*((info **)evicted_key))->value = calloc(1, MAX_RESPONSE_LENGTH);
+            strcpy((*((info **)evicted_key))->value, out_value);
 
             // stergere head, adaugare la final
             head = ll_remove_nth_node(cache->list, 0);
             ht_remove_entry(cache->name_node_map, out_key);
+            
+            free(((info *)(head->data))->key);
+            free(((info *)(head->data))->value);
+            free(head->data);
+            free(head);
             cache->size--;
         }
         cache->size++;
@@ -77,8 +86,12 @@ bool lru_cache_put(lru_cache *cache, void *key, void *value,
 
         Node *new = calloc(1, sizeof(Node));
         new->data = calloc(1, sizeof(info));
-        simple_copy(&(((info *)(new->data))->key), key, MAX_RESPONSE_LENGTH);
-        simple_copy(&(((info *)(new->data))->value), value, MAX_RESPONSE_LENGTH);
+
+        ((info *)(new->data))->key = calloc(1, MAX_RESPONSE_LENGTH);
+        strcpy(((info *)(new->data))->key, key);
+
+        ((info *)(new->data))->value = calloc(1, MAX_RESPONSE_LENGTH);
+        strcpy(((info *)(new->data))->value, value);
 
         new->prev = cache->list->tail;
         if (cache->list->head == NULL)
@@ -94,7 +107,7 @@ bool lru_cache_put(lru_cache *cache, void *key, void *value,
     }
     
     // adaugare / actualizare in ht_node_name map
-    ht_put(cache->name_node_map, key, strlen((char *)key), cache->list->tail, sizeof(cache->list->tail));
+    ht_put(cache->name_node_map, key, MAX_RESPONSE_LENGTH, cache->list->tail, sizeof(cache->list->tail));
     
     return res;
 }
@@ -121,19 +134,19 @@ void lru_cache_remove(lru_cache *cache, void *key) {
         cache->list->head = cache->list->head->next;
         if (cache->list->head)
             cache->list->head->prev = NULL;
-        free(curr);
     }
     else if (curr == cache->list->tail) {
         cache->list->tail = cache->list->tail->prev;
         if (cache->list->tail)
             cache->list->tail->next = NULL;
-        free(curr);
     }
     else {
         curr->prev->next = curr->next;
         curr->next->prev = curr->prev;
-        free(curr);
     }
     ht_remove_entry(cache->name_node_map, key);
-
+    free(((info *)(curr->data))->key);
+    free(((info *)(curr->data))->value);
+    free(curr->data);
+    free(curr);
 }
