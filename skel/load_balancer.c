@@ -19,7 +19,6 @@ load_balancer *init_load_balancer(bool enable_vnodes) {
 void loader_add_server(load_balancer* main, int server_id, int cache_size) {
     unsigned int index = main->size;
     unsigned int hash = main->hash_function_servers(&server_id);
-
     // cautare server cu hash-ul minim, mai mare decat hash-ul nou introdus
     for (unsigned int i = 0; i < main->size; i++) {
         if (hash < main->servers[i]->hash) {
@@ -35,7 +34,7 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size) {
         }
     }
     // mutare server nou pe pozitia index
-    if (main->size > 0)
+    if (main->size > 0 && index != main->size)
         for (int i = main->size; i >= (int) (index + 1); i--)
             main->servers[i] = main->servers[i - 1];
     main->servers[index] = init_server(cache_size);
@@ -46,15 +45,33 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size) {
     // parcurgem documentele de pe server-ul succesor, si daca 
     // hash_document < hash_new_server, il mutam
 
-    if (main->size > 0) {
+    // for (int j = 0; j <= main->size; j++) {
+    //     hashtable_t *ht = main->servers[j]->database;
+    //     printf("Server %u: ", main->servers[j]->server_id);
+    //     // for (unsigned int i = 0; i < ht->hmax; i++) {
+    //     //     Node *node = ht->buckets[i]->head;
+    //     //     while (node) {
+    //     //         printf("Server %u: Document: %s\n", main->servers[j]->server_id, ((info *)(node->data))->key);
+    //     //         node = node->next;
+    //     //     }
+    //     // }
+    //     printf("\n");
+    // }
+
+    // printf("Server's %u index: %u\n", server_id, index);
+
+    main->size++;
+    if (main->size > 1) {
         unsigned int succ;
         succ = (index + 1) % main->size;
-        hashtable_t *ht = main->servers[succ]->database;
+
         // executie comenzi de pe server-ul succesor
         request *req = calloc(1, sizeof(request));
-        req->type = REMOVE_SERVER;
+        req->type = ADD_SERVER;
         server_handle_request(main->servers[succ], req);
         free(req);
+
+        hashtable_t *ht = main->servers[succ]->database;
         for (unsigned int i = 0; i < ht->hmax; i++) {
             Node *node = ht->buckets[i]->head, *next;
             while (node) {
@@ -63,8 +80,8 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size) {
                     // adaugare in noul database
                     ht_put(main->servers[index]->database,((info *)(node->data))->key, MAX_RESPONSE_LENGTH,
                     ((info *)(node->data))->value, MAX_RESPONSE_LENGTH);
-                    // exista in cache, il vom elimina
-                    if (lru_cache_get(main->servers[succ]->cache, ((info *)(node->data))->key))
+                    // daca exista in cache, il vom elimina
+                    if (ht_get(main->servers[succ]->cache->name_node_map, ((info *)(node->data))->key))
                         lru_cache_remove(main->servers[succ]->cache, ((info *)(node->data))->key);
                     // stergere din database vechi
                     ht_remove_entry(ht, ((info *)(node->data))->key);
@@ -73,7 +90,6 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size) {
             }
         }
     }
-    main->size++;
 }
 
 void loader_remove_server(load_balancer* main, int server_id) {
@@ -91,8 +107,8 @@ void loader_remove_server(load_balancer* main, int server_id) {
     free(req);
 
     // mutare documente pe server-ul succesor de pe server-ul curent
-
-    unsigned int succ = (index + 1) % main->size;
+    unsigned int succ;
+    succ = (index + 1) % main->size;
     hashtable_t *ht = main->servers[index]->database;
     for (unsigned int i = 0; i < ht->hmax; i++) {
         Node *node = ht->buckets[i]->head;
@@ -114,9 +130,9 @@ void loader_remove_server(load_balancer* main, int server_id) {
 response *loader_forward_request(load_balancer* main, request *req) {
     unsigned int i, index = 0, hash;
     hash = main->hash_function_docs(req->doc_name);
-    // cautare server cu hash-ul minim, mai mare decat hash-ul nou introdus
+    // cautare server cu hash-ul minim, mai mare decat hash-ul documentului
     for (i = 0; i < main->size; i++)
-        if (hash <= main->servers[i]->hash) {
+        if (hash < main->servers[i]->hash) {
             index = i;
             break;
         }

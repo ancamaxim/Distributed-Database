@@ -123,13 +123,12 @@ void *lru_cache_get(lru_cache *cache, void *key) {
 }
 
 void lru_cache_remove(lru_cache *cache, void *key) {
-    char *value = lru_cache_get(cache, key);
-    if (!value)
+    Node *curr = ht_get(cache->name_node_map, key);
+    if (!curr)
         return;
 
     // sterge nodul din cache
     cache->size--;
-    Node *curr = ht_get(cache->name_node_map, key);
     if(curr == cache->list->head) {
         cache->list->head = cache->list->head->next;
         if (cache->list->head)

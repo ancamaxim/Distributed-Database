@@ -258,6 +258,8 @@ void ht_remove_entry(hashtable_t *ht, void *key)
 			aux->data = NULL;
 			free(aux);
 			aux = NULL;
+			if (ht->buckets[index]->size == 0)
+				ht->size--;
 			return;
 		}
 		node = node->next;
