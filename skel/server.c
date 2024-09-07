@@ -79,11 +79,10 @@ static response
                 free(((info *)evicted_key)->key);
                 free(((info *)evicted_key)->value);
                 free(evicted_key);
-            }
-            else
+            } else {
                 sprintf(resp->server_log, LOG_MISS, doc_name);
-        }
-        else {
+            }
+        } else {
             free(resp->server_response);
             resp->server_response = NULL;
             sprintf(resp->server_log, LOG_FAULT, doc_name);

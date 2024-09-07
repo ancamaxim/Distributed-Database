@@ -24,8 +24,7 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size) {
         if (hash < main->servers[i]->hash) {
             index = i;
             break;
-        }
-        else if (hash == main->servers[i]->hash) {
+        } else if (hash == main->servers[i]->hash) {
             if (server_id < main->servers[i]->server_id)
                 index = i;
             else
@@ -34,31 +33,17 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size) {
         }
     }
     // mutare server nou pe pozitia index
-    if (main->size > 0 && index != main->size)
+    if (main->size > 0 && index != main->size) {
         for (int i = main->size; i >= (int) (index + 1); i--)
             main->servers[i] = main->servers[i - 1];
+    }
     main->servers[index] = init_server(cache_size);
     main->servers[index]->server_id = server_id;
     main->servers[index]->hash = hash;
 
     // mutare documente pe server-ul nou introdus
-    // parcurgem documentele de pe server-ul succesor, si daca 
+    // parcurgem documentele de pe server-ul succesor, si daca
     // hash_document < hash_new_server, il mutam
-
-    // for (int j = 0; j <= main->size; j++) {
-    //     hashtable_t *ht = main->servers[j]->database;
-    //     printf("Server %u: ", main->servers[j]->server_id);
-    //     // for (unsigned int i = 0; i < ht->hmax; i++) {
-    //     //     Node *node = ht->buckets[i]->head;
-    //     //     while (node) {
-    //     //         printf("Server %u: Document: %s\n", main->servers[j]->server_id, ((info *)(node->data))->key);
-    //     //         node = node->next;
-    //     //     }
-    //     // }
-    //     printf("\n");
-    // }
-
-    // printf("Server's %u index: %u\n", server_id, index);
 
     main->size++;
     if (main->size > 1) {
@@ -72,21 +57,30 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size) {
         free(req);
 
         hashtable_t *ht = main->servers[succ]->database;
+        unsigned int hash_doc;
         for (unsigned int i = 0; i < ht->hmax; i++) {
             Node *node = ht->buckets[i]->head, *next;
             while (node) {
                 next = node->next;
-                if (main->hash_function_docs(((info *)(node->data))->key) <= hash) {
-                    // adaugare in noul database
-                    ht_put(main->servers[index]->database,((info *)(node->data))->key, MAX_RESPONSE_LENGTH,
-                    ((info *)(node->data))->value, MAX_RESPONSE_LENGTH);
-                    // daca exista in cache, il vom elimina
-                    if (ht_get(main->servers[succ]->cache->name_node_map, ((info *)(node->data))->key))
-                        lru_cache_remove(main->servers[succ]->cache, ((info *)(node->data))->key);
-                    // stergere din database vechi
-                    ht_remove_entry(ht, ((info *)(node->data))->key);
+                hash_doc = main->hash_function_docs(
+                    ((info *)(node->data))->key);
+                if (succ == 0 && hash_doc < main->servers[0]->hash) {
+                    node = next;
+                } else {
+                    if (hash_doc < hash ||
+                    (index == 0 && hash_doc > main->servers[succ]->hash)) {
+                        // adaugare in noul database
+                        ht_put(main->servers[index]->database,
+                        ((info *)(node->data))->key, MAX_RESPONSE_LENGTH,
+                        ((info *)(node->data))->value, MAX_RESPONSE_LENGTH);
+                        // daca exista in cache, il vom elimina
+                        if (ht_get(main->servers[succ]->cache->name_node_map, ((info *)(node->data))->key))
+                            lru_cache_remove(main->servers[succ]->cache, ((info *)(node->data))->key);
+                        // stergere din database vechi
+                        ht_remove_entry(ht, ((info *)(node->data))->key);
+                    }
+                    node = next;
                 }
-                node = next;
             }
         }
     }
