@@ -15,12 +15,14 @@ typedef struct load_balancer {
     unsigned int *hashring;
     unsigned int (*hash_function_servers)(void *);
     unsigned int (*hash_function_docs)(void *);
+    bool enable_vnodes;
 } load_balancer;
 
 
 load_balancer *init_load_balancer(bool enable_vnodes);
 
 void free_load_balancer(load_balancer** main);
+
 
 /**
  * loader_add_server() - Adds a new server to the system.
@@ -36,6 +38,8 @@ void free_load_balancer(load_balancer** main);
  */
 void loader_add_server(load_balancer* main, int server_id, int cache_size);
 
+void loader_add_single_server(load_balancer* main, int server_id, int cache_size);
+
 /**
  * loader_remove_server() Removes a server from the system.
  * 
@@ -50,6 +54,8 @@ void loader_add_server(load_balancer* main, int server_id, int cache_size);
  * should be executed before moving the documents.
  */
 void loader_remove_server(load_balancer* main, int server_id);
+
+void loader_remove_single_server(load_balancer* main, int server_id);
 
 /**
  * loader_forward_request() - Forwards a request to the appropriate server.

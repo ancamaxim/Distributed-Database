@@ -140,9 +140,11 @@ response *server_handle_request(server_t *s, request *req) {
 }
 
 void free_server(server_t **s) {
-    free_lru_cache(&((*s)->cache));
-    ht_free((*s)->database);
-    q_free((*s)->task);
+    if ((*s)->server_id < 100000) {
+        free_lru_cache(&((*s)->cache));
+        ht_free((*s)->database);
+        q_free((*s)->task);
+    }
     free(*s);
     *s = NULL;
 }
