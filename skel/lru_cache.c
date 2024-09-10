@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, <>
+ * Copyright (c) 2024, Maxim Anca-Stefania <ancastef7@gmail.com>
  */
 
 #include <stdio.h>
@@ -16,7 +16,9 @@ lru_cache *init_lru_cache(unsigned int cache_capacity) {
     cache->capacity = cache_capacity;
     cache->size = 0;
     cache->list = ll_create(sizeof(info));
-    cache->name_node_map = ht_create(100, hash_string, compare_function_strings, key_val_free_function, node_copy);
+    cache->name_node_map = ht_create(100, hash_string,
+                                    compare_function_strings,
+                                    key_val_free_function, node_copy);
     return cache;
 }
 
@@ -40,8 +42,7 @@ void move_to_front(lru_cache *cache, void *node) {
         curr->next->prev = NULL;
         cache->list->tail->next = curr;
         cache->list->head = curr->next;
-    }
-    else {
+    } else {
         curr->prev->next = curr->next;
         curr->next->prev = curr->prev;
     }
@@ -58,7 +59,6 @@ bool lru_cache_put(lru_cache *cache, void *key, void *value,
     if (lru_cache_get(cache, key) == NULL) {
         res = true;
         if (cache->capacity == cache->size) {
-
             Node *head = cache->list->head;
             char *out_key = (char *)(((info *)(head->data))->key);
             char *out_value = (char *)(((info *)(head->data))->value);
@@ -73,7 +73,6 @@ bool lru_cache_put(lru_cache *cache, void *key, void *value,
             // stergere head, adaugare la final
             head = ll_remove_nth_node(cache->list, 0);
             ht_remove_entry(cache->name_node_map, out_key);
-            
             free(((info *)(head->data))->key);
             free(((info *)(head->data))->value);
             free(head->data);
@@ -99,16 +98,16 @@ bool lru_cache_put(lru_cache *cache, void *key, void *value,
         else
             cache->list->tail->next = new;
         cache->list->tail = new;
-    }
-    else {
+    } else {
         move_to_front(cache, ht_get(cache->name_node_map, key));
-        strcpy((char *)(((info *)(cache->list->tail->data))->value), (char *)value);
+        strcpy((char *)(((info *)(cache->list->tail->data))->value),
+                (char *)value);
         res = false;
     }
-    
+
     // adaugare / actualizare in ht_node_name map
-    ht_put(cache->name_node_map, key, MAX_RESPONSE_LENGTH, cache->list->tail, sizeof(cache->list->tail));
-    
+    ht_put(cache->name_node_map, key, MAX_RESPONSE_LENGTH,
+        cache->list->tail, sizeof(cache->list->tail));
     return res;
 }
 
@@ -116,7 +115,7 @@ void *lru_cache_get(lru_cache *cache, void *key) {
     Node *node = ht_get(cache->name_node_map, key);
     if (node == NULL)
         return NULL;
-    if(node == cache->list->tail)
+    if (node == cache->list->tail)
         return ((info *)(node->data))->value;
     move_to_front(cache, node);
     return ((info *)(node->data))->value;
@@ -129,17 +128,15 @@ void lru_cache_remove(lru_cache *cache, void *key) {
 
     // sterge nodul din cache
     cache->size--;
-    if(curr == cache->list->head) {
+    if (curr == cache->list->head) {
         cache->list->head = cache->list->head->next;
         if (cache->list->head)
             cache->list->head->prev = NULL;
-    }
-    else if (curr == cache->list->tail) {
+    } else if (curr == cache->list->tail) {
         cache->list->tail = cache->list->tail->prev;
         if (cache->list->tail)
             cache->list->tail->next = NULL;
-    }
-    else {
+    } else {
         curr->prev->next = curr->next;
         curr->next->prev = curr->prev;
     }

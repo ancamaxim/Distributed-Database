@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2024, Maxim Anca-Stefania <ancastef7@gmail.com>
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "hashtable.h"
@@ -141,7 +145,7 @@ void key_val_free_function(void *data) {
 // creeaza un hashtable;
 hashtable_t *ht_create(unsigned int hmax, unsigned int (*hash_function)(void*),
 		int (*compare_function)(void*, void*),
-		void (*key_val_free_function)(void*), 
+		void (*key_val_free_function)(void*),
 		void (*copy_func)(void **, void *, unsigned int))
 {
 	hashtable_t *ht = (hashtable_t*)malloc(sizeof(hashtable_t));
@@ -159,7 +163,7 @@ hashtable_t *ht_create(unsigned int hmax, unsigned int (*hash_function)(void*),
 			free(ht);
 			return NULL;
 		}
-		ht->buckets[i]->head = NULL; // lucrez cu structuri info
+		ht->buckets[i]->head = NULL;
 		ht->buckets[i]->data_size = sizeof(info);
 		ht->buckets[i]->size = 0;
 	}
@@ -217,7 +221,7 @@ void ht_put(hashtable_t *ht, void *key, unsigned int key_size,
 	Node *node = ht->buckets[index]->head;
 	while (node) {
 		if (!ht->compare_function(((info*)(node->data))->key, key)) {
-			if (((info *)node->data)->value != value && 
+			if (((info *)node->data)->value != value &&
 				strcmp(((info *)node->data)->value, value)) {
 				free(((info*)(node->data))->value);
 				((info *)node->data)->value = calloc(1, value_size);
@@ -234,7 +238,7 @@ void ht_put(hashtable_t *ht, void *key, unsigned int key_size,
 	strcpy(data->key, key);
 	ht->copy_func(&data->value, value, value_size);
 	ht->size++;
-	ll_add_nth_node(ht->buckets[index], 0, data); // adaug data in lista;
+	ll_add_nth_node(ht->buckets[index], 0, data);
 }
 
 // elibereaza un camp din hashtable pe baza cheii

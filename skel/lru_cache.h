@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, <>
+ * Copyright (c) 2024, Maxim Anca-Stefania <ancastef7@gmail.com>
  */
 
 #ifndef LRU_CACHE_H
@@ -56,5 +56,5 @@ void *lru_cache_get(lru_cache *cache, void *key);
 */
 void lru_cache_remove(lru_cache *cache, void *key);
 
-#endif 
+#endif
 /* LRU_CACHE_H */

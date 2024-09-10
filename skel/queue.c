@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2024, Maxim Anca-Stefania <ancastef7@gmail.com>
+ */
 
 #include "server.h"
 #include "queue.h"
@@ -79,7 +82,9 @@ int q_enqueue(queue_t *q, void *new_data)
  */
 void q_clear(queue_t *q)
 {
-	while (q_dequeue(q));
+	while (q_dequeue(q)) {
+		continue;
+	}
 }
 
 /*

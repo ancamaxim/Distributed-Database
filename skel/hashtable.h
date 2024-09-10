@@ -1,6 +1,9 @@
+/*
+ * Copyright (c) 2024, Maxim Anca-Stefania <ancastef7@gmail.com>
+ */
+
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
-
 
 typedef struct node {
     void *data;
@@ -22,7 +25,7 @@ struct info {
 
 typedef struct hashtable_t hashtable_t;
 struct hashtable_t {
-	linked_list_t **buckets; // Array de liste simplu-inlantuite.
+	linked_list_t **buckets;  // Array de liste simplu-inlantuite.
 	// Nr. total de noduri existente curent in toate bucket-urile.
 	unsigned int size;
 	unsigned int hmax; /* Nr. de bucket-uri. */
@@ -52,9 +55,9 @@ void key_val_free_function(void *data);
 
 hashtable_t *ht_create(unsigned int hmax, unsigned int (*hash_function)(void*),
 		int (*compare_function)(void*, void*),
-		void (*key_val_free_function)(void*), 
+		void (*key_val_free_function)(void*),
 		void (*copy_func)(void **, void *, unsigned int));
-        
+
 int ht_has_key(hashtable_t *ht, void *key);
 
 void *ht_get(hashtable_t *ht, void *key);

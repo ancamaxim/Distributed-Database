@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, <>
+ * Copyright (c) 2024, Maxim Anca-Stefania <ancastef7@gmail.com>
  */
 
 #ifndef LOAD_BALANCER_H
@@ -38,7 +38,8 @@ void free_load_balancer(load_balancer** main);
  */
 void loader_add_server(load_balancer* main, int server_id, int cache_size);
 
-void loader_add_single_server(load_balancer* main, int server_id, int cache_size);
+void loader_add_single_server(load_balancer* main, int server_id,
+                            int cache_size);
 
 /**
  * loader_remove_server() Removes a server from the system.
@@ -75,6 +76,6 @@ void loader_remove_single_server(load_balancer* main, int server_id);
 response *loader_forward_request(load_balancer* main, request *req);
 
 
-#endif 
+#endif
 
 /* LOAD_BALANCER_H */

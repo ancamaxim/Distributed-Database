@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, <>
+ * Copyright (c) 2024, Maxim Anca-Stefania <ancastef7@gmail.com>
  */
 
 #ifndef UTILS_H
